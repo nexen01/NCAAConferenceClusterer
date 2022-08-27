@@ -1,0 +1,37 @@
+---
+title: "Conference Cluster Finder"
+output: 
+  html_notebook:
+    toc: yes
+    toc_float: yes
+author: Vijay K. Gurbani, Ph.D., 
+        Illinois Institute of Technology
+---
+
+### Test Kmeans
+```{r}
+library(cluster)
+library(factoextra)
+data.test <- read.csv("allschools.csv", row.names = 1)
+
+data.test$Mens.Conv.score = scale(data.test$Mens.Conv.score)
+data.test$Womens.Conv.score = scale(data.test$Womens.Conv.score)
+data.test$Lat = scale(data.test$Lat)
+data.test$Long = scale(data.test$Long)
+
+
+
+k <- kmeans(data.test, centers=24, nstart=100)
+k.vis <- fviz_cluster(k, data=data.test)
+k.vis$data
+```
+
+### Test plotting
+```{r}
+confs <- read.csv("allschools.csv", row.names = 1)
+library(randomcoloR)
+cols <- distinctColorPalette(k=24)
+plot(x=confs$Long, y=confs$Lat, type="p", col=cols[as.factor(confs$Cluster)], xlab = "lat", ylab = "long")
+
+
+```
